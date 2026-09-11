@@ -93,22 +93,29 @@ def process_and_evaluate(image_path):
 
 
 def display_maps(img_orig, results):
-    fig, axes = plt.subplots(3, 3, figsize=(16, 12))
+    fig, axes = plt.subplots(
+    3, 3,
+    figsize=(18, 13),
+    layout='constrained'
+    )
     
-    fig.suptitle("Error Maps for 256x256 Downsampling", fontsize=18, y=0.98)
+    fig.suptitle(
+    "Error Maps for 256x256 Downsampling",
+    fontsize=20
+)
     
     res_256 = [r for r in results if r["Downsample"] == "256x256"]
     
     for idx, res in enumerate(res_256):
         axes[idx, 0].imshow(res["Reconstructed"], cmap='gray')
-        axes[idx, 0].set_title(f"{res['Method']}\nReconstructed", fontsize=14, pad=12)
+        axes[idx, 0].set_title(f"{res['Method']}\nReconstructed", fontsize=14, pad=15)
         axes[idx, 0].axis('off')
         
         abs_err = res["Abs Error"]
         vmax_abs = np.percentile(abs_err, 99.5) if np.max(abs_err) > 0 else 1
         
         img_abs = axes[idx, 1].imshow(abs_err, cmap='hot', vmin=0, vmax=vmax_abs)
-        axes[idx, 1].set_title(f"{res['Method']}\nAbsolute Error", fontsize=14, pad=12)
+        axes[idx, 1].set_title(f"{res['Method']}\nAbsolute Error", fontsize=14, pad=15)
         axes[idx, 1].axis('off')
         fig.colorbar(img_abs, ax=axes[idx, 1], fraction=0.046, pad=0.04)
         
@@ -116,12 +123,11 @@ def display_maps(img_orig, results):
         vmax_sq = np.percentile(sq_err, 99.5) if np.max(sq_err) > 0 else 1
         
         img_sq = axes[idx, 2].imshow(sq_err, cmap='hot', vmin=0, vmax=vmax_sq)
-        axes[idx, 2].set_title(f"{res['Method']}\nSquared Error", fontsize=14, pad=12)
+        axes[idx, 2].set_title(f"{res['Method']}\nSquared Error", fontsize=14, pad=15)
         axes[idx, 2].axis('off')
         fig.colorbar(img_sq, ax=axes[idx, 2], fraction=0.046, pad=0.04)
         
-    plt.tight_layout()
-    plt.subplots_adjust(top=0.90, hspace=0.4, wspace=0.3)
+    
     plt.show()
 
 if __name__ == "__main__":

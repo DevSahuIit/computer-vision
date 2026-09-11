@@ -2,4 +2,4 @@ numpy
 opencv-python
 matplotlib
 scikit-image
-cv2
+opencv-python
